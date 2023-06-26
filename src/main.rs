@@ -61,7 +61,7 @@ fn main() {
             args.count
         ),
         None => println!(
-            "Dice failed to fall {} on a row on the same side, {dice_rolled}",
+            "Dice failed to fall {} on a row on the same side, after rolling {dice_rolled} dice",
             args.count
         ),
     }
