@@ -1,5 +1,6 @@
 use clap::{arg, command, Parser};
 use clap_num::number_range;
+use iro::{iformat, iprintln};
 use rand::Rng;
 
 fn in_side_range(s: &str) -> Result<u8, String> {
@@ -20,11 +21,16 @@ struct Args {
 
     /// Number of dice rolled
     #[arg(short, long, default_value_t = 6)]
-    count: u8,
+    count: u16,
+
+    // To turn off color
+    #[arg(short, long)]
+    no_color: bool,
 }
 
 fn main() {
     let args = Args::parse();
+    iro::set_flag(!args.no_color);
     let mut thread_rng = rand::thread_rng();
     let mut dice_rolled = 0;
     let mut generate_side = || {
@@ -56,13 +62,16 @@ fn main() {
     };
 
     match maybe {
-        Some(value) => println!(
-            "Dice fell on {value} {} times after after rolling {dice_rolled} dice",
-            args.count
+        Some(value) => iprintln!(
+            "Dice <b>fell</> on <g>{}</> <m>{}</> times after after rolling <m>{}</> dice",
+            value,
+            args.count,
+            dice_rolled
         ),
-        None => println!(
-            "Dice failed to fall {} on a row on the same side, after rolling {dice_rolled} dice",
-            args.count
+        None => iprintln!(
+            "Dice <r>failed</> to fall <g>{}</> on a row on the same side, after rolling <m>{}</> dice",
+            args.count,
+            dice_rolled
         ),
     }
 }
